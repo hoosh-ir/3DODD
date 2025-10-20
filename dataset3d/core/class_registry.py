@@ -1,5 +1,5 @@
 from typing import Tuple, List
-from core.unified_format import BBox3D  # اگه اسم فایل فرق داره اصلاحش کن
+from dataset3d.core.unified_format import BBox3D  # اگه اسم فایل فرق داره اصلاحش کن
 
 class ClassRegistry:
     """Global class taxonomy for multi-dataset training

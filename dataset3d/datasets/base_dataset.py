@@ -8,9 +8,9 @@ from torch.utils.data import Dataset
 from typing import Any, Dict, List, Optional, Callable
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor
-from core.unified_format import Sample
-# from core.collate import collate_3d_samples
-from core.class_registry import ClassRegistry
+from dataset3d.core.unified_format import Sample
+from dataset3d.core.collate import collate_3d_samples
+from dataset3d.core.class_registry import ClassRegistry
 
 
 class Base3DDataset(Dataset):

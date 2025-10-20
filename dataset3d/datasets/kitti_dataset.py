@@ -2,10 +2,10 @@ import os
 import numpy as np
 import torch
 from typing import Any, Dict, List, Optional
-from datasets.base_dataset import Base3DDataset
-# from core.geometry import transform_bbox, get_transform_between_frames
-from utils.io import load_bin_pointcloud
-from core.unified_format import BBox3D, PointCloud, CalibrationData, Frame, Sample
+from dataset3d.datasets.base_dataset import Base3DDataset
+from dataset3d.core.geometry import transform_bbox, get_transform_between_frames
+from dataset3d.utils.io import load_bin_pointcloud
+from dataset3d.core.unified_format import BBox3D, PointCloud, CalibrationData, Frame, Sample
 
 
 class KITTIDataset(Base3DDataset):
@@ -142,10 +142,10 @@ class KITTIDataset(Base3DDataset):
             )
             bboxes.append(bbox)
 
-        # # Transform to target frame if needed
-        # if self.target_frame == "lidar":
-        #     T_cam_to_lidar = torch.inverse(calib.lidar_to_camera["cam2"])
-        #     bboxes = [transform_bbox(b, T_cam_to_lidar, target_frame="lidar") for b in bboxes]
+        # Transform to target frame if needed
+        if self.target_frame == "lidar":
+            T_cam_to_lidar = torch.inverse(calib.lidar_to_camera["cam2"])
+            bboxes = [transform_bbox(b, T_cam_to_lidar, target_frame="lidar") for b in bboxes]
 
         frame = Frame(
             frame_id=frame_id,
