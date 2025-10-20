@@ -669,57 +669,6 @@ class Compose(Transform):
 
 **KITTI** (`datasets/kitti.py`):
 
-```python
-class KITTIDataset(Base3DDataset):
-    """KITTI 3D Object Detection Dataset
-    
-    Coordinate Frame Conventions:
-    - Default frame: "camera" (rectified camera 0)
-        * X: Right, Y: Down, Z: Forward
-        * Boxes and labels are in camera frame
-    - LiDAR frame: "lidar" (Velodyne)
-        * X: Forward, Y: Left, Z: Up
-        * Point clouds in LiDAR frame
-    - Calibration provides: camera intrinsics, lidar_to_camera transforms
-    
-    Dataset-specific notes:
-    - KITTI ground truth boxes are in camera coordinate frame
-    - Can optionally transform to LiDAR frame using target_frame parameter
-    """
-    
-    def __init__(
-        self,
-        ...,
-        modalities: List[str] = ["lidar"],  # ["lidar", "camera"]
-        use_sequences: bool = False,
-        sequence_length: int = 5,
-        target_frame: str = "camera"  # "camera" or "lidar" - which frame to return data in
-    ):
-        """Initialize KITTI dataset with configurable modalities
-        
-        Args:
-            target_frame: Coordinate frame for output data
-                - "camera": Keep boxes in camera frame (KITTI native)
-                - "lidar": Transform boxes to LiDAR frame
-        """
-    
-    def _load_sample_list(self) -> List[str]:
-        """Read frame IDs from ImageSets/{split}.txt"""
-    
-    def load_raw_data(self, idx: int) -> Dict[str, Any]:
-        """Load velodyne points, labels, and calibration"""
-    
-    def to_unified(self, raw_data: Dict[str, Any]) -> Sample:
-        """Parse KITTI format to unified Sample
-        
-        - Point clouds loaded in LiDAR frame
-        - Boxes loaded in camera frame (KITTI native)
-        - Transformed to target_frame if specified
-        - All data has coordinate_frame attribute set
-        """
-        pass
-```
-
 **nuScenes** (`datasets/nuscenes.py`):
 
 ```python
