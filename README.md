@@ -42,7 +42,6 @@ Create a modular library with the following structure:
 
 **1.1 Unified Format Definition** (`core/unified_format.py`)
 
-**Data Classes**:
 
 **Coordinate Frame Conventions** (`core/coordinate_frames.py`):
 
