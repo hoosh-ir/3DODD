@@ -648,47 +648,8 @@ class BatchConverter:
 
 **Rerun Visualizer** (`visualization/rerun_visualizer.py`):
 
-```python
-class RerunVisualizer:
-    """Main visualizer class wrapping Rerun SDK"""
-    
-    def __init__(self, recording_name: str = "3dodd"):
-        """Initialize Rerun recording"""
-    
-    def log_sample(
-        self,
-        sample: Sample,
-        entity_path: str = "/",
-        color_mode: str = "intensity"  # "intensity", "height", "class"
-    ) -> None:
-        """Log Sample to Rerun with automatic entity structure"""
-    
-    def log_sequence(
-        self,
-        sequence: Sequence,
-        timeline: str = "frame"
-    ) -> None:
-        """Log temporal sequence with timeline"""
-```
-
 **Point Cloud Visualization** (`visualization/pointcloud_vis.py`):
 
-```python
-def visualize_pointcloud(
-    points: torch.Tensor,  # (N, 3+)
-    colors: Optional[torch.Tensor] = None,  # (N, 3) RGB or None
-    color_by: str = "intensity",  # "intensity", "height", "z"
-    entity_path: str = "/pointcloud"
-) -> None:
-    """Log point cloud to Rerun with optional coloring
-    Future: Support segmentation visualization with per-point colors"""
-
-def visualize_boxes_3d(
-    boxes: List[BBox3D],
-    entity_path: str = "/boxes_3d"
-) -> None:
-    """Log 3D bounding boxes as line sets to Rerun"""
-```
 
 **BEV Visualization** (`visualization/bev_vis.py`):
 
