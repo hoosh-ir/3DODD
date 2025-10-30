@@ -1,4 +1,6 @@
+import sys
 import os
+sys.path.append(os.path.abspath('.'))
 import numpy as np
 import torch
 from typing import Any, Dict, List, Optional
@@ -145,7 +147,7 @@ class KITTIDataset(Base3DDataset):
         # Transform to target frame if needed
         if self.target_frame == "lidar":
             T_cam_to_lidar = torch.inverse(calib.lidar_to_camera["cam2"])
-            bboxes = [transform_bbox(b, T_cam_to_lidar, target_frame="lidar") for b in bboxes]
+            bboxes = [transform_bbox(bbox, T_cam_to_lidar, target_frame="lidar") for b in bboxes]
 
         frame = Frame(
             frame_id=frame_id,

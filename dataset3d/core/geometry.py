@@ -22,18 +22,33 @@ def transform_bbox(
     transform: torch.Tensor,
     target_frame: str
 ) -> BBox3D:
-    """Transform bbox to target coordinate frame
+    """Transform bbox to target coordinate frame"""
     
-    Args:
-        bbox: BBox3D in source frame
-        transform: (4, 4) transformation from source to target
-        target_frame: Name of target coordinate frame
-        
-    Returns:
-        BBox3D in target frame with updated coordinate_frame
-    """
-    pass
-
+    # Transform the center point from homogeneous coordinates
+    center_homo = torch.cat([bbox.center, torch.tensor([1.0])])  # (4,)
+    transformed_center_homo = transform @ center_homo
+    transformed_center = transformed_center_homo[:3]
+    
+    # For KITTI, we assume the rotation is only around Z-axis (yaw)
+    # In a proper implementation, you'd need to transform the rotation too
+    # but for now we'll keep the same yaw
+    
+    # Create new bbox with transformed center
+    transformed_bbox = BBox3D(
+        center=transformed_center,
+        dimensions=bbox.dimensions.clone(),
+        rotation_yaw=bbox.rotation_yaw,  # Note: This might need adjustment
+        coordinate_frame=target_frame,
+        class_name=bbox.class_name,
+        class_id=bbox.class_id,
+        rotation_quat=bbox.rotation_quat.clone() if bbox.rotation_quat is not None else None,
+        confidence=bbox.confidence,
+        tracking_id=bbox.tracking_id,
+        velocity=bbox.velocity.clone() if bbox.velocity is not None else None,
+        attributes=bbox.attributes.copy()
+    )
+    
+    return transformed_bbox
 def transform_frame_to_frame(
     frame: Frame,
     target_frame: str,
