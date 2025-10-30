@@ -156,7 +156,13 @@ class KITTIDataset(Base3DDataset):
         # Transform to target frame if needed
         if self.target_frame == "lidar":
             T_cam_to_lidar = torch.inverse(calib.lidar_to_camera["cam2"])
-            bboxes = [transform_bbox(bbox, T_cam_to_lidar, target_frame="lidar") for bbox in bboxes]
+            bboxes_lidar = []
+            for bbox in bboxes:
+                transformed = transform_bbox(bbox, T_cam_to_lidar, target_frame="lidar")
+                # Fix yaw: camera (Y-up) → lidar (Z-up)
+                transformed.rotation_yaw = -(bbox.rotation_yaw + torch.pi / 2)
+                bboxes_lidar.append(transformed)
+            bboxes = bboxes_lidar
 
         print(f"🔍 After transform - Box centers:")
         for i, bbox in enumerate(bboxes):

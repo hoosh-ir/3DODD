@@ -57,7 +57,7 @@ def visualize_boxes_3d(
             box_entity,
             rr.Boxes3D(
                 centers=[center],
-                half_sizes=[dims],
+                half_sizes=[dims / 2],
                 rotation_axis_angles=[rr.RotationAxisAngle(axis=[0, 0, 1], angle=yaw)],
                 colors=[255, 0, 0],
                 labels=[bbox.class_name]
