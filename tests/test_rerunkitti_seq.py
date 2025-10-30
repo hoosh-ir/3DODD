@@ -3,6 +3,7 @@ import os
 import time
 import rerun as rr
 
+# Add the project root to Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from dataset3d.datasets.kitti_dataset import KITTIDataset
@@ -23,22 +24,23 @@ def main():
 
     visualizer = RerunVisualizer(recording_name="KITTI_3DODD_Sequential")
 
-    # Loop through multiple frames sequentially
-    for idx in range(min(50, len(dataset))):  # adjust frame count
+    entity_path = "/kitti/sequence"
+
+    for idx in range(min(50, len(dataset))):
         sample = dataset[idx]
 
-        # Log the current frame under a single consistent entity path
-        rr.set_time_sequence("frame", idx)  # or use rr.set_time_seconds("frame", time.time())
+        rr.set_time_sequence("frame", idx)
+
         visualizer.log_sample(
             sample,
-            entity_path="/kitti/pointcloud",
+            entity_path=entity_path,
             color_mode="height"
         )
 
         print(f"✅ Logged frame {idx}: {sample.data.frame_id}")
-        time.sleep(0.05)  # optional: small delay to simulate playback
+        time.sleep(0.03)
 
-    print("✅ Finished logging all frames sequentially!")
+    print("🎬 Finished logging all frames sequentially!")
 
 
 if __name__ == "__main__":

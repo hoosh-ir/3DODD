@@ -23,7 +23,7 @@ def main():
     print(f"✅ Loaded dataset with {len(dataset)} samples")
 
         # Get first sample
-    sample = dataset[3]
+    sample = dataset[44]
     print(f"✅ Loaded sample: {sample.data.frame_id}")
         # Initialize visualizer
     visualizer = RerunVisualizer(recording_name="KITTI_3DODD_Test")

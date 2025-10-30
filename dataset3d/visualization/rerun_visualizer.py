@@ -6,7 +6,6 @@ import rerun as rr
 import torch
 import numpy as np
 from dataset3d.core.unified_format import Sample, Sequence, Frame
-from dataset3d.datasets.kitti_dataset import KITTIDataset
 from dataset3d.visualization.pointcloud_vis import visualize_pointcloud, visualize_boxes_3d
 
 
@@ -17,34 +16,39 @@ class RerunVisualizer:
     def log_sample(
         self,
         sample: Sample,
-        entity_path: str = "/",
+        entity_path: str = "/kitti/sequence",
         color_mode: str = "intensity"
     ) -> None:
+        """Log one frame (point cloud + boxes) under a consistent path, replacing old ones."""
         data = sample.data
         if not isinstance(data, Frame):
             raise TypeError("RerunVisualizer currently supports only single-agent Frame visualization.")
 
-        # Set up coordinate system
+        # Coordinate system (rerun ignores duplicates)
         rr.log("world", rr.ViewCoordinates.RIGHT_HAND_Y_UP)
 
-        # Set up camera with good view of the scene
+        # 💡 Clear previous logs before writing new frame
+        rr.log(entity_path, rr.Clear(recursive=True))
+
+        # Compute centroid (optional)
         pts = data.point_cloud.points[:, :3].cpu().numpy()
         centroid = pts.mean(axis=0)
-        
 
-        # Log point cloud - THIS IS WHAT WAS MISSING
+        # Log point cloud — single persistent entity
         visualize_pointcloud(
             data.point_cloud.points,
             color_by=color_mode,
-            entity_path=f"{entity_path}/point_cloud"
+            entity_path=f"{entity_path}/pointcloud"
         )
 
-        # Log bounding boxes
-        visualize_boxes_3d(
-            data.bboxes_3d,
-            entity_path=f"{entity_path}/bboxes"
-        )
+        # Log bounding boxes — single persistent entity
+        if hasattr(data, "bboxes_3d") and len(data.bboxes_3d) > 0:
+            visualize_boxes_3d(
+                data.bboxes_3d,
+                entity_path=f"{entity_path}/bboxes"
+            )
 
+        # Log current frame ID text
         rr.log("frame_id", rr.TextLog(f"Frame: {data.frame_id}"))
 
     def log_sequence(
