@@ -130,6 +130,11 @@ class KITTIDataset(Base3DDataset):
             sensor_id="lidar_top",
         )
 
+        # DEBUG: Check raw labels
+        print(f"🔍 Raw labels content:")
+        for i, obj in enumerate(raw_data["labels"]):
+            print(f"   Label {i}: {obj}")
+
         # Create BBoxes
         bboxes = []
         for obj in raw_data["labels"]:
@@ -144,10 +149,18 @@ class KITTIDataset(Base3DDataset):
             )
             bboxes.append(bbox)
 
+        print(f"🔍 Before transform - Box centers:")
+        for i, bbox in enumerate(bboxes):
+            print(f"   Box {i}: {bbox.center}")
+
         # Transform to target frame if needed
         if self.target_frame == "lidar":
             T_cam_to_lidar = torch.inverse(calib.lidar_to_camera["cam2"])
-            bboxes = [transform_bbox(bbox, T_cam_to_lidar, target_frame="lidar") for b in bboxes]
+            bboxes = [transform_bbox(bbox, T_cam_to_lidar, target_frame="lidar") for bbox in bboxes]
+
+        print(f"🔍 After transform - Box centers:")
+        for i, bbox in enumerate(bboxes):
+            print(f"   Box {i}: {bbox.center}")
 
         frame = Frame(
             frame_id=frame_id,

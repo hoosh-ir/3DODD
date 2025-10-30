@@ -38,28 +38,31 @@ def visualize_boxes_3d(
     entity_path: str = "/boxes_3d"
 ) -> None:
     """Log 3D bounding boxes as line sets to Rerun"""
-    for bbox in boxes:
+    print(f"🔍 Visualizing {len(boxes)} boxes")
+    
+    for i, bbox in enumerate(boxes):
         if bbox is None:
+            print(f"❌ Box {i} is None, skipping")
             continue
 
-        center = bbox.center.cpu().numpy()
-        dims = bbox.dimensions.cpu().numpy()
+        center = bbox.center.cpu().numpy() if hasattr(bbox.center, 'cpu') else bbox.center
+        dims = bbox.dimensions.cpu().numpy() if hasattr(bbox.dimensions, 'cpu') else bbox.dimensions
         yaw = bbox.rotation_yaw
+        
+        print(f"✅ Box {i}: {bbox.class_name} at {center}")
 
-        R = np.array([
-            [np.cos(yaw), -np.sin(yaw), 0],
-            [np.sin(yaw), np.cos(yaw), 0],
-            [0, 0, 1]
-        ])
-
+        # Log each box with unique path
+        box_entity = f"{entity_path}/box_{i}"
         rr.log(
-            f"{entity_path}/{bbox.class_name}",
+            box_entity,
             rr.Boxes3D(
                 centers=[center],
-                half_sizes=dims / 2.0,
-                rotations=R.reshape(1, 3, 3),
-                colors=[[255, 0, 0]],
+                half_sizes=[dims],
+                rotation_axis_angles=[rr.RotationAxisAngle(axis=[0, 0, 1], angle=yaw)],
+                colors=[255, 0, 0],
                 labels=[bbox.class_name]
             )
         )
-
+        print(f"📦 Logged to: {box_entity}")
+    
+    print(f"🎯 Finished logging {len(boxes)} boxes")

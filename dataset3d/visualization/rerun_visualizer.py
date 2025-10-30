@@ -6,6 +6,7 @@ import rerun as rr
 import torch
 import numpy as np
 from dataset3d.core.unified_format import Sample, Sequence, Frame
+from dataset3d.datasets.kitti_dataset import KITTIDataset
 from dataset3d.visualization.pointcloud_vis import visualize_pointcloud, visualize_boxes_3d
 
 
@@ -30,20 +31,6 @@ class RerunVisualizer:
         pts = data.point_cloud.points[:, :3].cpu().numpy()
         centroid = pts.mean(axis=0)
         
-        rr.log(
-            "world/camera",
-            rr.Pinhole(
-                focal_length=500,
-                width=1280,
-                height=720,
-            )
-        )
-        rr.log(
-            "world/camera",
-            rr.Transform3D(
-                translation=[centroid[0] - 15, centroid[1] - 15, centroid[2] + 10]
-            )
-        )
 
         # Log point cloud - THIS IS WHAT WAS MISSING
         visualize_pointcloud(
@@ -65,7 +52,10 @@ class RerunVisualizer:
         sequence: Sequence,
         timeline: str = "frame"
     ) -> None:
-        for i, frame in enumerate(sequence.frames):
-            rr.set_time_sequence(timeline, i)
-            sample = Sample(data=frame, split="val", dataset_name="kitti")
-            self.log_sample(sample, entity_path=f"/sequence/frame_{i}")
+        """Not implemented for non-sequential datasets like KITTI."""
+        raise NotImplementedError(
+            "log_sequence() is not implemented yet. "
+            "This method is only intended for sequential datasets "
+            "(e.g., nuScenes, Waymo, or OPV2V). "
+            "For KITTI, use log_sample() or show_dataset() instead."
+        )
