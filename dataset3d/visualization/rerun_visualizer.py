@@ -7,6 +7,7 @@ import torch
 import numpy as np
 from dataset3d.core.unified_format import Sample, Sequence, Frame
 from dataset3d.visualization.pointcloud_vis import visualize_pointcloud, visualize_boxes_3d
+from dataset3d.visualization.image_vis import visualize_image
 
 
 class RerunVisualizer:
@@ -41,12 +42,21 @@ class RerunVisualizer:
             entity_path=f"{entity_path}/pointcloud"
         )
 
+
+
         # Log bounding boxes — single persistent entity
         if hasattr(data, "bboxes_3d") and len(data.bboxes_3d) > 0:
             visualize_boxes_3d(
                 data.bboxes_3d,
                 entity_path=f"{entity_path}/bboxes"
             )
+
+        # Optionally log corresponding camera image
+        if hasattr(data, "frame_id"):
+            img_path = os.path.join("/media/sina/New Volume/data/kitti/training/image_2",
+                                    f"{data.frame_id}.png")
+            visualize_image(img_path, entity_path=f"{entity_path}/image")
+
 
         # Log current frame ID text
         rr.log("frame_id", rr.TextLog(f"Frame: {data.frame_id}"))
