@@ -1,7 +1,6 @@
 import sys
 import os
 
-# Add the project root to Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from dataset3d.datasets.kitti_dataset import KITTIDataset
@@ -12,7 +11,6 @@ def main():
     data_root = "/media/sina/New Volume/data/kitti"
 
 
-        # Load dataset
     dataset = KITTIDataset(
             data_root=data_root,
             split="train",
@@ -22,13 +20,10 @@ def main():
 
     print(f"✅ Loaded dataset with {len(dataset)} samples")
 
-        # Get first sample
     sample = dataset[44]
     print(f"✅ Loaded sample: {sample.data.frame_id}")
-        # Initialize visualizer
     visualizer = RerunVisualizer(recording_name="KITTI_3DODD_Test")
         
-        # Visualize sample
     visualizer.log_sample(
             sample, 
             entity_path="/kitti/frame_0", 

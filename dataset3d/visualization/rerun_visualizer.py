@@ -8,7 +8,7 @@ import numpy as np
 from dataset3d.core.unified_format import Sample, Sequence, Frame
 from dataset3d.visualization.pointcloud_vis import visualize_pointcloud, visualize_boxes_3d
 from dataset3d.visualization.image_vis import visualize_image
-
+from dataset3d.visualization.bev_vis import visualize_bev
 
 class RerunVisualizer:
     def __init__(self, recording_name: str = "3dodd"):
@@ -57,6 +57,7 @@ class RerunVisualizer:
                                     f"{data.frame_id}.png")
             visualize_image(img_path, entity_path=f"{entity_path}/image")
 
+        
 
         # Log current frame ID text
         rr.log("frame_id", rr.TextLog(f"Frame: {data.frame_id}"))

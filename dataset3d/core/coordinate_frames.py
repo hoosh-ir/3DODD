@@ -1,4 +1,5 @@
 from typing import Dict
+
 class CoordinateFrame:
     """Coordinate frame definitions and conventions
     
@@ -64,4 +65,19 @@ class CoordinateFrame:
         Returns:
             Dict with 'x', 'y', 'z' keys mapping to direction strings
         """
-        pass
+        dataset_name = dataset_name.lower()
+        frame = frame.lower()
+
+        if dataset_name not in CoordinateFrame.DATASET_CONVENTIONS:
+            raise ValueError(
+                f"Unknown dataset '{dataset_name}'. Supported datasets: {list(CoordinateFrame.DATASET_CONVENTIONS.keys())}"
+            )
+
+        dataset_frames = CoordinateFrame.DATASET_CONVENTIONS[dataset_name]
+        if frame not in dataset_frames:
+            raise ValueError(
+                f"Frame '{frame}' not defined for dataset '{dataset_name}'. "
+                f"Available frames: {list(dataset_frames.keys())}"
+            )
+
+        return dataset_frames[frame]

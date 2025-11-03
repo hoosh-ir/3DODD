@@ -3,7 +3,6 @@ import sys
 import torch
 import pytest
 
-# اضافه کردن مسیر پروژه به sys.path تا dataset3d پیدا بشه
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from dataset3d.datasets.kitti_dataset import KITTIDataset
@@ -45,7 +44,6 @@ def test_bboxes_have_valid_format(dataset):
         pytest.skip("No bounding boxes available in this frame.")
 
     for bbox in sample.data.bboxes_3d:
-        # هندل کردن bbox=None
         if bbox is None:
             pytest.skip("Encountered None-type bbox in dataset.")
         assert isinstance(bbox.center, torch.Tensor), "bbox.center should be a Tensor"

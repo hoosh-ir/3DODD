@@ -130,10 +130,6 @@ class KITTIDataset(Base3DDataset):
             sensor_id="lidar_top",
         )
 
-        # DEBUG: Check raw labels
-        print(f"🔍 Raw labels content:")
-        for i, obj in enumerate(raw_data["labels"]):
-            print(f"   Label {i}: {obj}")
 
         # Create BBoxes
         bboxes = []
@@ -149,9 +145,7 @@ class KITTIDataset(Base3DDataset):
             )
             bboxes.append(bbox)
 
-        print(f"🔍 Before transform - Box centers:")
-        for i, bbox in enumerate(bboxes):
-            print(f"   Box {i}: {bbox.center}")
+        
 
         # Transform to target frame if needed
         if self.target_frame == "lidar":
@@ -164,9 +158,6 @@ class KITTIDataset(Base3DDataset):
                 bboxes_lidar.append(transformed)
             bboxes = bboxes_lidar
 
-        print(f"🔍 After transform - Box centers:")
-        for i, bbox in enumerate(bboxes):
-            print(f"   Box {i}: {bbox.center}")
 
         frame = Frame(
             frame_id=frame_id,

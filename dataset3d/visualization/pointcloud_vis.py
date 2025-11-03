@@ -7,9 +7,9 @@ from dataset3d.core.unified_format import BBox3D
 
 
 def visualize_pointcloud(
-    points: torch.Tensor,  # (N, 3+)
-    colors: Optional[torch.Tensor] = None,  # (N, 3) RGB or None
-    color_by: str = "intensity",  # "intensity", "height", "z"
+    points: torch.Tensor, 
+    colors: Optional[torch.Tensor] = None, 
+    color_by: str = "intensity",  
     entity_path: str = "/pointcloud"
 ) -> None:
     """Log point cloud to Rerun with optional coloring
@@ -42,16 +42,13 @@ def visualize_boxes_3d(
     
     for i, bbox in enumerate(boxes):
         if bbox is None:
-            print(f"❌ Box {i} is None, skipping")
             continue
 
         center = bbox.center.cpu().numpy() if hasattr(bbox.center, 'cpu') else bbox.center
         dims = bbox.dimensions.cpu().numpy() if hasattr(bbox.dimensions, 'cpu') else bbox.dimensions
         yaw = bbox.rotation_yaw
         
-        print(f"✅ Box {i}: {bbox.class_name} at {center}")
 
-        # Log each box with unique path
         box_entity = f"{entity_path}/box_{i}"
         rr.log(
             box_entity,
@@ -63,6 +60,4 @@ def visualize_boxes_3d(
                 labels=[bbox.class_name]
             )
         )
-        print(f"📦 Logged to: {box_entity}")
     
-    print(f"🎯 Finished logging {len(boxes)} boxes")
