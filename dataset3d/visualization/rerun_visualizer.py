@@ -26,7 +26,7 @@ class RerunVisualizer:
             raise TypeError("RerunVisualizer currently supports only single-agent Frame visualization.")
 
         # Coordinate system (rerun ignores duplicates)
-        rr.log("world", rr.ViewCoordinates.RIGHT_HAND_Y_UP)
+        rr.log("world", rr.ViewCoordinates.RIGHT_HAND_Z_UP)
 
         # 💡 Clear previous logs before writing new frame
         rr.log(entity_path, rr.Clear(recursive=True))

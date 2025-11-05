@@ -28,7 +28,7 @@ def main():
     for idx in range(min(50, len(dataset))):
         sample = dataset[idx]
 
-        rr.set_time_sequence("frame", idx)
+        rr.set_time("frame", sequence=idx)
 
         visualizer.log_sample(
             sample,
