@@ -23,9 +23,9 @@ def main():
 
     visualizer = RerunVisualizer(recording_name="KITTI_3DODD_Sequential")
 
-    entity_path = "/kitti/sequence"
+    entity_path = "/world/sequence"
 
-    for idx in range(min(50, len(dataset))):
+    for idx in range(min(10, len(dataset))):
         sample = dataset[idx]
 
         rr.set_time("frame", sequence=idx)

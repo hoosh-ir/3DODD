@@ -49,7 +49,6 @@ class ClassRegistry:
         self.class_to_id = {name: idx for idx, name in enumerate(self.UNIFIED_CLASSES)}
         self.id_to_class = {idx: name for name, idx in self.class_to_id.items()}
     
-    # -------------------------------------------------------------------------
     def map_dataset_class_to_unified(
         self, 
         dataset_name: str, 

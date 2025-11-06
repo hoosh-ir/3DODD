@@ -11,7 +11,7 @@ def main():
     data_root = "/media/sina/New Volume/data/kitti"
 
 
-    dataset = KITTIDataset(
+    dataset = KITTIDataset( 
             data_root=data_root,
             split="train",
             target_frame="lidar",
@@ -19,8 +19,9 @@ def main():
         )
 
     print(f"✅ Loaded dataset with {len(dataset)} samples")
-
-    sample = dataset[44]
+    
+    sample = dataset[6000]
+    
     print(f"✅ Loaded sample: {sample.data.frame_id}")
     visualizer = RerunVisualizer(recording_name="KITTI_3DODD_Test")
         

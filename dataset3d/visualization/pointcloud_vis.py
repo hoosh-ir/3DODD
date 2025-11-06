@@ -47,7 +47,7 @@ def visualize_boxes_3d(
         center = bbox.center.cpu().numpy() if hasattr(bbox.center, 'cpu') else bbox.center
         dims = bbox.dimensions.cpu().numpy() if hasattr(bbox.dimensions, 'cpu') else bbox.dimensions
         yaw = bbox.rotation_yaw
-        center[2] += dims[2] / 2.0  # فرض بر Z-up
+        center[2] += dims[2] / 2.0 
 
 
         box_entity = f"{entity_path}/box_{i}"

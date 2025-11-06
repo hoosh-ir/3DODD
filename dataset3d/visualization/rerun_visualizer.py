@@ -17,7 +17,7 @@ class RerunVisualizer:
     def log_sample(
         self,
         sample: Sample,
-        entity_path: str = "/kitti/sequence",
+        entity_path: str = "/world/sequence",
         color_mode: str = "intensity"
     ) -> None:
         """Log one frame (point cloud + boxes) under a consistent path, replacing old ones."""
@@ -26,7 +26,7 @@ class RerunVisualizer:
             raise TypeError("RerunVisualizer currently supports only single-agent Frame visualization.")
 
         # Coordinate system (rerun ignores duplicates)
-        rr.log("world", rr.ViewCoordinates.RIGHT_HAND_Z_UP)
+        rr.log("world", rr.ViewCoordinates.RFU , static= True)
 
         # 💡 Clear previous logs before writing new frame
         rr.log(entity_path, rr.Clear(recursive=True))
@@ -53,14 +53,20 @@ class RerunVisualizer:
 
         # Optionally log corresponding camera image
         if hasattr(data, "frame_id"):
-            img_path = os.path.join("/media/sina/New Volume/data/kitti/training/image_2",
-                                    f"{data.frame_id}.png")
+            img_path = os.path.join(
+                "/media/sina/New Volume/data/kitti/training/image_2",
+                f"{int(data.frame_id):06d}.png"
+            )
+
             visualize_image(img_path, entity_path=f"{entity_path}/image")
 
         
 
         # Log current frame ID text
         rr.log("frame_id", rr.TextLog(f"Frame: {data.frame_id}"))
+        print("Frame id:", data.frame_id)
+        print("Expected file:", f"{data.frame_id}.png")
+
 
     def log_sequence(
         self,

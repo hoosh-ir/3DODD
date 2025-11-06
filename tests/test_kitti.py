@@ -38,7 +38,7 @@ def test_load_first_sample(dataset):
 
 def test_bboxes_have_valid_format(dataset):
     """Test bbox properties and class mapping"""
-    sample = dataset[0]
+    sample = dataset[44]
 
     if not sample.data.has_labels or len(sample.data.bboxes_3d) == 0:
         pytest.skip("No bounding boxes available in this frame.")
